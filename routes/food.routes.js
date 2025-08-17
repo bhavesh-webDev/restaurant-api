@@ -34,11 +34,3 @@ Router.route("/orderStatus/:id").post(
   orderStatusController
 );
 module.exports = Router;
-//  createFoodController,
-//   getAllFoodsController,
-//   getSingleFoodController,
-//   getFoodByResturantController,
-//   updateFoodController,
-//   deleteFoodController,
-//   placeOrderController,
-// //   orderStatusController,

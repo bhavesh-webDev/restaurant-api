@@ -6,15 +6,17 @@ const getUser = async (req, res) => {
     if (!user) {
       return res
         .status(404)
-        .send({ message: " User Not Found ", success: false });
+        .send({ status: 404, message: " User Not Found ", success: false });
     }
     res.status(200).send({
+      status: 200,
       message: "Successfully Fetched User...",
       success: true,
       fetchedUser: user,
     });
   } catch (error) {
     res.status(500).send({
+      status: 500,
       message: "Error in Admins Get User API...",
       success: false,
       error: error.message,
@@ -27,15 +29,17 @@ const getAllUsers = async (req, res) => {
     if (!users) {
       return res
         .status(400)
-        .send({ message: "User Not Found...", success: false });
+        .send({ status: 400, message: "User Not Found...", success: false });
     }
     res.status(200).send({
+      status: 200,
       message: "successfully fetched all users ...",
       success: true,
       users: users,
     });
   } catch (error) {
     res.status(500).send({
+      status: 500,
       message: "Error in Admins Get All users API...",
       success: false,
       error: error.message,
@@ -58,16 +62,22 @@ const updateUser = async (req, res) => {
     if (!user) {
       return res
         .status(404)
-        .send({ message: "User Not Found to Update...", success: false });
+        .send({
+          status: 404,
+          message: "User Not Found to Update...",
+          success: false,
+        });
     }
 
     res.status(200).send({
+      status: 200,
       message: "User Updated Successfully...",
       success: true,
       updatedUser: user,
     });
   } catch (error) {
     res.status(500).send({
+      status: 500,
       message: "Error in Admins Update User API...",
       success: false,
       error: error.message,
@@ -81,13 +91,22 @@ const deleteUser = async (req, res) => {
     if (!user) {
       return res
         .status(404)
-        .send({ message: "User Not Found to Delete... ", success: false });
+        .send({
+          status: 404,
+          message: "User Not Found to Delete... ",
+          success: false,
+        });
     }
     res
       .status(200)
-      .send({ message: "User Deleted successfully...", success: true });
+      .send({
+        status: 200,
+        message: "User Deleted successfully...",
+        success: true,
+      });
   } catch (error) {
     res.status(500).send({
+      status: 500,
       message: "Error in Admins Delete User API...",
       success: false,
       error: error.message,

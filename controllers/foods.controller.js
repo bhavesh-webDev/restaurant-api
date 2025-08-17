@@ -19,6 +19,7 @@ const addFood = async (req, res) => {
     } = req.body;
     if (!foodName || !discription || !price || !foodTag) {
       return res.status(400).send({
+        status: 400,
         message: "All important fields are required",
         success: false,
       });
@@ -39,12 +40,14 @@ const addFood = async (req, res) => {
 
     await addFood.save();
     res.status(200).send({
+      status: 200,
       message: "Food Added Successfully ",
       success: true,
       addedFood: addFood,
     });
   } catch (error) {
     res.status(500).send({
+      status: 500,
       message: " Error in add Food API...",
       success: false,
       error: error.message,
@@ -57,15 +60,17 @@ const getAllFood = async (req, res) => {
     if (!food) {
       return res
         .status(404)
-        .send({ message: "Food not found...", success: false });
+        .send({ status: 404, message: "Food not found...", success: false });
     }
     res.status(200).send({
+      status: 200,
       message: "Get all food Successfully...",
       success: true,
       AllFood: food,
     });
   } catch (error) {
     res.status(500).send({
+      status: 500,
       message: "Error in Get All food API ...",
       success: true,
       error: error.message,
@@ -79,13 +84,19 @@ const getFood = async (req, res) => {
     if (!food) {
       return res
         .status(404)
-        .send({ message: "Food Not Found...", success: false });
+        .send({ status: 404, message: "Food Not Found...", success: false });
     }
     res
       .status(200)
-      .send({ message: "Getting Food Successfull", success: true, Food: food });
+      .send({
+        status: 200,
+        message: "Getting Food Successfull",
+        success: true,
+        Food: food,
+      });
   } catch (error) {
     res.status(500).send({
+      status: 500,
       message: "Error in Get Food API...",
       success: false,
       error: error.message,
@@ -98,22 +109,32 @@ const getFoodByRestaurant = async (req, res) => {
     if (!restaurantId) {
       return res
         .status(404)
-        .send({ message: " Provide Restaurant Id ", success: false });
+        .send({
+          status: 404,
+          message: " Provide Restaurant Id ",
+          success: false,
+        });
     }
 
     const foods = await foodModel.find({ restaurant: restaurantId });
     if (!foods) {
       return res
         .status(404)
-        .send({ message: "No food Found in restaurant ...", success: false });
+        .send({
+          status: 404,
+          message: "No food Found in restaurant ...",
+          success: false,
+        });
     }
     res.status(200).send({
+      status: 200,
       message: "successfully fetched food from restaurant ...",
       success: true,
       restaurantFood: foods,
     });
   } catch (error) {
     res.status(500).send({
+      status: 500,
       message: "Error in Get Food By Restaurant API ",
       success: false,
       error: error.message,
@@ -126,14 +147,14 @@ const updateFood = async (req, res) => {
     if (!foodId) {
       return res
         .status(404)
-        .send({ message: "Food id not found...", success: false });
+        .send({ status: 404, message: "Food id not found...", success: false });
     }
 
     const food = await foodModel.findById({ _id: foodId });
     if (!food) {
       return res
         .status(404)
-        .send({ message: "Food Not Found...", success: false });
+        .send({ status: 404, message: "Food Not Found...", success: false });
     }
     const { foodName, discription, price, foodTag, category, isAvailable } =
       req.body;
@@ -145,12 +166,14 @@ const updateFood = async (req, res) => {
     );
 
     res.status(200).send({
+      status: 200,
       message: "Food Updated Successfully...",
       success: true,
       updatedFood: updatedFood,
     });
   } catch (error) {
     res.status(500).send({
+      status: 500,
       message: "Error in Update Food API...",
       success: false,
       error: error.message,
@@ -163,21 +186,23 @@ const deleteFoodController = async (req, res) => {
     if (!foodId) {
       return res
         .status(404)
-        .send({ message: "Food Id Not Found...", success: false });
+        .send({ status: 404, message: "Food Id Not Found...", success: false });
     }
     const food = await foodModel.findByIdAndDelete(foodId);
     if (!food) {
       return res
         .status(404)
-        .send({ message: "Food not Found...", success: false });
+        .send({ status: 404, message: "Food not Found...", success: false });
     }
     res.status(200).send({
+      status: 200,
       message: "Food Deleted Successfully...",
       success: true,
       deletedFood: food,
     });
   } catch (error) {
     res.status(500).send({
+      status: 500,
       message: "Error in Delete Food API...",
       success: false,
       error: error.message,
@@ -191,6 +216,7 @@ const placeOrder = async (req, res) => {
     const { cart, payment } = req.body;
     if (!cart || !payment) {
       return res.status(404).send({
+        status: 404,
         message: "Cart Empty or Payment not selected ...",
         success: false,
       });
@@ -209,12 +235,14 @@ const placeOrder = async (req, res) => {
     });
     await newOrder.save();
     res.status(200).send({
+      status: 200,
       message: "Order Placed Successfully...",
       success: true,
       newOrder: newOrder,
     });
   } catch (error) {
     res.status(500).send({
+      status: 500,
       message: "Error in Place order API...",
       success: false,
       error: error.message,
@@ -229,7 +257,11 @@ const orderStatusController = async (req, res) => {
     if (!orderId) {
       return res
         .status(404)
-        .send({ message: "Order Id Not Found ...", success: false });
+        .send({
+          status: 404,
+          message: "Order Id Not Found ...",
+          success: false,
+        });
     }
     const { status } = req.body;
     const orderStatus = await ordelModel.findByIdAndUpdate(
@@ -237,15 +269,15 @@ const orderStatusController = async (req, res) => {
       { status },
       { new: true }
     );
-    res
-      .status(200)
-      .send({
-        message: "Order Status updated Successfully ...",
-        success: true,
-        orderStatus: orderStatus,
-      });
+    res.status(200).send({
+      status: 200,
+      message: "Order Status updated Successfully ...",
+      success: true,
+      orderStatus: orderStatus,
+    });
   } catch (error) {
     res.status(500).send({
+      status: 500,
       message: "Error in Order Status Controller ...",
       success: false,
       error: error.message,

@@ -5,12 +5,14 @@ const getUserController = async (req, res) => {
     const user = await userModel.findById({ _id: req.id }); //can also do {_id:0} to hide id
     if (!user) {
       return res.status(404).json({
+        status: 404,
         message: "User Not Found or Something Went Wrong",
         success: false,
       });
     }
     const { password: _, ...safeUser } = user._doc; //Else use  ==> user.password = undefined;
     res.status(200).send({
+      status: 200,
       message: "Get User Data Successfull",
       success: true,
       user: safeUser,
@@ -18,7 +20,11 @@ const getUserController = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .send({ message: "Error in Get User Controller ", success: false });
+      .send({
+        status: 500,
+        message: "Error in Get User Controller ",
+        success: false,
+      });
   }
 };
 const updateUserController = async (req, res) => {
@@ -27,13 +33,17 @@ const updateUserController = async (req, res) => {
     if (req.id !== id) {
       return res
         .status(500)
-        .send({ message: "cannot update others Account ", success: false });
+        .send({
+          status: 500,
+          message: "cannot update others Account ",
+          success: false,
+        });
     }
     const user = await userModel.findById({ _id: req.id });
     if (!user) {
       return res
         .status(404)
-        .send({ message: "User Not Found ", success: false });
+        .send({ status: 404, message: "User Not Found ", success: false });
     }
     const { userName, address, phone } = req.body;
     // console.log("REQ : ", req);
@@ -44,11 +54,17 @@ const updateUserController = async (req, res) => {
     await user.save();
     res
       .status(200)
-      .send({ message: "User Updated Successfully ", success: true });
+      .send({
+        status: 200,
+        message: "User Updated Successfully ",
+        success: true,
+      });
   } catch (error) {
-    res
-      .status(500)
-      .send({ message: "Error in Api Update User Controller", success: false });
+    res.status(500).send({
+      status: 500,
+      message: "Error in Api Update User Controller",
+      success: false,
+    });
   }
 };
 
@@ -65,16 +81,23 @@ const updatePassword = async (req, res) => {
   if (req.id !== id) {
     return res
       .status(500)
-      .send({ message: "cannot update others password ", success: false });
+      .send({
+        status: 500,
+        message: "cannot update others password ",
+        success: false,
+      });
   }
   const user = await userModel.find({ _id: id });
   if (!user) {
-    return res.status(404).send({ message: "User Not Found", success: false });
+    return res
+      .status(404)
+      .send({ status: 404, message: "User Not Found", success: false });
   }
 
   const { oldPassword, newPassword } = req.body;
   if (!oldPassword || !newPassword) {
     return res.status(500).send({
+      status: 500,
       message: "Old Password And New Password is Required",
       success: false,
     });
@@ -83,6 +106,7 @@ const updatePassword = async (req, res) => {
 
   if (!isMatch) {
     return res.status(500).send({
+      status: 500,
       message: "Provided Old Password does not match",
       success: false,
     });
@@ -92,6 +116,7 @@ const updatePassword = async (req, res) => {
   user.password = hashedPassword;
   await user.save();
   res.status(200).send({
+    status: 200,
     message: "updated Password Successfully",
     success: true,
     user: user,
@@ -103,23 +128,30 @@ const resetPasswordController = async (req, res) => {
     const { email, answer, newPassword } = req.body;
 
     if (!email || !newPassword || !answer) {
-      res.status(400).send({
-        message: "Email and Answer is Required ",
-        success: false,
-      });
+      res
+        .status(400)
+        .send({
+          status: 400,
+          message: "Email and Answer is Required ",
+          success: false,
+        });
     }
     const user = await userModel.findOne({ email }); // user object {}
     // console.log(user);
     if (!user) {
       return res
         .status(404)
-        .send({ message: "User Not Found ", success: false });
+        .send({ status: 404, message: "User Not Found ", success: false });
     }
 
     if (req.body.answer !== user.answer && req.body.email !== user.email) {
       return res
         .status(500)
-        .send({ message: "Answer does not match", success: false });
+        .send({
+          status: 500,
+          message: "Answer does not match",
+          success: false,
+        });
     }
     const hashedPassword = bcrypt.hashSync(newPassword, 10);
     // console.log("HAshed : ", hashedPassword);
@@ -128,6 +160,7 @@ const resetPasswordController = async (req, res) => {
     // console.log("USER PASS : ", user.password);
     await user.save();
     res.status(200).send({
+      status: 200,
       message: "Password Reset Successfull",
       success: true,
       user: user,
@@ -135,6 +168,7 @@ const resetPasswordController = async (req, res) => {
     // const decode = jwt.
   } catch (error) {
     res.status(500).send({
+      status: 500,
       message: "Error in Reset Password Controller",
       success: false,
       error: error.message,
@@ -149,22 +183,32 @@ const deleteUserProfile = async (req, res) => {
     if (req.id !== id) {
       return res
         .status(500)
-        .send({ message: "cannot delete others Account ", success: false });
+        .send({
+          status: 500,
+          message: "cannot delete others Account ",
+          success: false,
+        });
     }
     const user = await userModel.findByIdAndDelete(id);
     console.log("USER : ", user);
 
     if (!user) {
       return res.status(404).send({
+        status: 404,
         message: "user not found to delete ",
         success: false,
       });
     }
     res
       .status(200)
-      .send({ message: "user Deleted successfully", success: true });
+      .send({
+        status: 200,
+        message: "user Deleted successfully",
+        success: true,
+      });
   } catch (error) {
     res.status(500).send({
+      status: 500,
       message: "Error in delete api ",
       error: error.message,
       success: false,

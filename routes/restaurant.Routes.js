@@ -12,10 +12,10 @@ const {
 Router.route("/create").post(validUser, createRestaurantController);
 
 //Get All Restaurants
-Router.route("/getall").get(getAllRestaurant);
+Router.route("/getAll").get(getAllRestaurant);
 
 //Get Restaurant By Id
-Router.route("/get-restaurant/:id").get(getSingleRestaurant);
+Router.route("/getRestaurant/:id").get(getSingleRestaurant);
 
 // Delete Restaurant By ID
 Router.route("/delete/:id").delete(validUser, deleteRestaurant);

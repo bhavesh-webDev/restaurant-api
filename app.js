@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
 dotenv.config();
+const homeRoute = require("./routes/home.routes");
 const userRoute = require("./routes/user.Routes");
 const authRoute = require("./routes/auth.Routes");
 const restaurantRoute = require("./routes/restaurant.Routes");
@@ -24,6 +25,8 @@ app.use(
 );
 
 // routes
+
+app.use("/home", homeRoute);
 app.use("/user", userRoute);
 app.use("/auth", authRoute);
 app.use("/restaurant", restaurantRoute);
