@@ -1,6 +1,7 @@
 const express = require("express");
 const Router = express.Router();
 const { validUser } = require("../middlewares/auth.middleware");
+const notRestaurant = require("../middlewares/user.middleware");
 const {
   createRestaurantController,
   getAllRestaurant,
@@ -9,7 +10,11 @@ const {
 } = require("../controllers/restaurant.controller");
 
 //Add new Restaurant
-Router.route("/create").post(validUser, createRestaurantController);
+Router.route("/create").post(
+  validUser,
+  notRestaurant,
+  createRestaurantController
+);
 
 //Get All Restaurants
 Router.route("/getAll").get(getAllRestaurant);
@@ -18,6 +23,6 @@ Router.route("/getAll").get(getAllRestaurant);
 Router.route("/getRestaurant/:id").get(getSingleRestaurant);
 
 // Delete Restaurant By ID
-Router.route("/delete/:id").delete(validUser, deleteRestaurant);
+Router.route("/delete/:id").delete(validUser, notRestaurant, deleteRestaurant);
 
 module.exports = Router;

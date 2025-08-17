@@ -11,6 +11,7 @@ const {
   placeOrder,
   orderStatusController,
 } = require("../controllers/foods.controller");
+const notRestaurant = require("../middlewares/user.middleware");
 const Router = express.Router();
 
 // Add food
